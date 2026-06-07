@@ -18,6 +18,7 @@ async def auth_middleware(request, handler):
     except jwt.InvalidTokenError: 
         return web.Response(status=401, text="Unauthorized")
 
-    user_id = request['user']['sub']
-
+    request['user'] = decoded_JWT
+    user_id = decoded_JWT['sub']
+    
     return await handler(request)
