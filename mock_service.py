@@ -3,6 +3,7 @@ import json
 from aiohttp import web
 from middleware.auth import auth_middleware
 from middleware.ratelimit import rateLimit_middleware
+from middleware.logger import logger_middleware
 
 async def handle(request):
     async with aiohttp.ClientSession() as session: 
@@ -14,7 +15,7 @@ async def handle(request):
                 content_type="application/json"
             )
 
-app = web.Application(middlewares=[auth_middleware, rateLimit_middleware])
+app = web.Application(middlewares=[logger_middleware, auth_middleware, rateLimit_middleware])
 app.add_routes([web.get('/', handle)])
 
 if __name__ == "__main__":
